@@ -1,0 +1,19 @@
+{
+    "name": "jetti_operation_config",
+    "version": "1.0.0",
+    "description": "Jetti-Operation-Config",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/KolpakovD33/Jetti_Operation_Config"
+    },
+    "scripts": {},
+    "devDependencies": {
+        "eslint": "^7.21.0"
+    },
+    "keywords": [],
+    "author": "Kolpakov.D33",
+    "license": "ISC",
+    "dependencies": {
+        "mssql": "^6.3.1"
+    }
+}
