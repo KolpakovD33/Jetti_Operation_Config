@@ -1,58 +1,35 @@
-const { Connection, Request } = require("tedious");
+var sql = require('mssql');
 
-// const DB_HOST = process.env.DB_HOST;
-// const DB_NAME = process.env.DB_NAME;
-// const DB_USER_META = process.env.DB_USER_META;
-// const DB_PASSWORD_META = process.env.DB_PASSWORD_META;
-// Create connection to database
-const config = {
-  authentication: {
-    options: {
-      userName: "PowerUser", // update me
-      password: "13Cb1KdpiHxK" // update me
-    },
-    type: "default"
-  },
-  server: "sql.jetti-app.com", // update me
-  options: {
-    database: "sm", //update me
-    encrypt: true
-  }
-};
+sql.connect("mssql://PowerUser:13Cb1KdpiHxK@sql.jetti-app.com/sm").then(function () {
+  // Query
 
-const connection = new Connection(config);
+  // new sql.Request().query('select * from mytable').then(function(recordset) {
+  // 	console.dir(recordset);
+  // }).catch(function(err) {
+  // 	// ... query error checks
+  // });
 
-// Attempt to connect and execute queries if connection goes through
-connection.on("connect", err => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    queryDatabase();
-  }
-});
+  //   // Stored Procedure
 
-function queryDatabase() {
-  console.log("Reading rows from the Table...");
+  // new sql.Request()
+  // .input('input_parameter', sql.Int, value)
+  //   .output('output_parameter', sql.VarChar(50))
+  // .execute('procedure_name').then(function(recordsets) {
+  // 	console.dir(recordsets);
+  // }).catch(function(err) {
+  // 	// ... execute error checks
+  // });
 
-  // Read all rows from table
-  const request = new Request(
-    `SELECT TOP 20 pc.code as "code"
-     FROM [dbo].[Catalog.Company] pc
-     `,
-    (err, rowCount) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        console.log(`${rowCount} row(s) returned`);
-      }
-    }
-  );
+  // ES6 Tagged template literals (experimental)
 
-  request.on("row", columns => {
-    columns.forEach(column => {
-      console.log("%s\t%s", column.metadata.colName, column.value);
-    });
+  sql.query`SELECT TOP 20 
+              pc.code as "code"
+            , pc.description 
+            FROM [dbo].[Catalog.Company.v] as pc with (noexpand)`.then(function (recordset) {
+    console.dir(recordset);
+  }).catch(function (err) {
+    // ... query error checks
   });
-
-  connection.execSql(request);
-}
+}).catch(function (err) {
+  // ... connect error checks
+});
