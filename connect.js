@@ -22,10 +22,8 @@ sql.connect("mssql://PowerUser:13Cb1KdpiHxK@sql.jetti-app.com/sm").then(function
 
   // ES6 Tagged template literals (experimental)
 
-  sql.query`SELECT TOP 20 
-              pc.code as "code"
-            , pc.description 
-            FROM [dbo].[Catalog.Company.v] as pc with (noexpand)`.then(function (recordset) {
+  sql.query`SELECT TOP 3 pc.*
+            FROM [dbo].[Catalog.Operation.v] as pc with (noexpand)`.then(function (recordset) {
     console.dir(recordset);
   }).catch(function (err) {
     // ... query error checks
