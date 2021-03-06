@@ -6,21 +6,22 @@
     "type": "git",
     "url": "git+https://github.com/KolpakovD33/Jetti_Operation_Config.git"
   },
-  "scripts": {},
+  "scripts": {
+    "dev": "node ./build/connect.js",
+    "watch": "tsc -w"
+  },
   "devDependencies": {
     "@types/node": "^14.14.31",
-    "eslint": "^7.21.0",
-    "tslint": "^6.1.3",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "uuid": "^8.3.0"
   },
   "keywords": [],
   "author": "Kolpakov.D33",
   "license": "ISC",
   "dependencies": {
-    "mssql": "^6.3.1",
-    "nodemon": "^2.0.7",
-    "tedious": "^11.0.5"
+    "mssql": "^6.3.1"
   },
+  "engineStrict": true,
   "bugs": {
     "url": "https://github.com/KolpakovD33/Jetti_Operation_Config/issues"
   },
