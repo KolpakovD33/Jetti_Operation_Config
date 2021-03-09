@@ -20,18 +20,18 @@ console.log(sql);
 
 async function queryExec() {
     let CurrentRes = await manyOrNone(sql);
-    console.log(CurrentRes);
+    // console.log(CurrentRes);
     return CurrentRes;
 }
 
 async function manyOrNone(sql: any, params: any[] = []) {
     new ConnectionPool(config).connect().then(pool => {
-        console.dir(pool);
+        //console.dir(pool);
         return new Promise((resolve, reject) => {
-            pool. query(sql, params),
+            pool.query(sql, params),
                 (err: String, result: any[]) => {
                     if (err) return reject(err);
-                    resolve(result)
+                    resolve(result);
                 };
         })
     }
