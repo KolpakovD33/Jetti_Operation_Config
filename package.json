@@ -8,20 +8,27 @@
   },
   "scripts": {
     "connect": "node ./build/connect/connect.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+  },
+  "dependencies": {
+    "mssql": "^6.3.1",
+    "express": "^4.17.1",
+    "tarn": "^2.0.0",
+    "tedious": "^9.2.3",
   },
   "devDependencies": {
     "@types/mssql": "^6.0.7",
     "@types/node": "^14.14.31",
+    "@types/tedious": "^4.0.3",
     "typescript": "^3.5.3",
-    "uuid": "^8.3.0"
+    "tslint": "^6.1.1",
+    "uuid": "^8.3.0",
+    "tarn": "^2.0.0",
+    "tedious": "^9.2.3"
   },
   "keywords": [],
   "author": "Kolpakov.D33",
   "license": "ISC",
-  "dependencies": {
-    "mssql": "^6.3.1"
-  },
   "engineStrict": true,
   "bugs": {
     "url": "https://github.com/KolpakovD33/Jetti_Operation_Config/issues"
