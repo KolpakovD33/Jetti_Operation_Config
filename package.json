@@ -8,13 +8,13 @@
   },
   "scripts": {
     "connect": "node ./build/connect/connect.js",
-    "watch": "tsc -w",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "mssql": "^6.3.1",
     "express": "^4.17.1",
     "tarn": "^2.0.0",
-    "tedious": "^9.2.3",
+    "tedious": "^9.2.3"
   },
   "devDependencies": {
     "@types/mssql": "^6.0.7",
