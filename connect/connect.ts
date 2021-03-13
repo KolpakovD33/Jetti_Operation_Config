@@ -1,12 +1,12 @@
 import { ConnectionPool } from 'mssql';
 import { config } from './connectProps';
 import { sql } from '../sql/SQLQuery';
-import { error } from 'node:console';
 
 const pool = new ConnectionPool(config);
 const poolConnect = pool.connect();
 
 console.log(sql);
+console.log(pool.connected);
 
 pool.on('error', err => {
     console.log(err);
@@ -14,17 +14,19 @@ pool.on('error', err => {
 
 async function manyOrNone (sql: any, params: any[] = []) {
     await poolConnect;
+    console.log(pool.connected);
     try {
         const request = pool.request();
+        console.log(request);
         const result = await request.query(sql, params);
-        console.log(result.recordset, result.rowsAffected, result.output);
+        console.log(result.recordset, result.rowsAffected);
         return result.recordset;
     } catch (err) {
         console.error('SQL error', err)
     }
 }
 
-const ttt = manyOrNone(sql);
+const ttt = manyOrNone(sql)
 console.log(JSON.stringify(ttt));
 
 // async function queryExec() {
