@@ -1,1 +1,1 @@
-export const sql: string = `select TOP 1 * from [dbo].[Documents] where [type] = 'Catalog.Company'`;
+export const sql: string = `select TOP 10 * from [dbo].[Documents] where [type] = 'Catalog.Operation'`;

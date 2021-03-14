@@ -1,66 +1,27 @@
-import { Connection, Request, TYPES } from 'tedious';
+import { ColumnValue, Connection, Request, RequestError, TYPES } from 'tedious';
 import { sql } from '../sql/SQLQuery';
 import { config } from './connectProps';
-import async from 'async'
+//import async = require('async');
 
-const connection = new Connection(config);
+export const connection = new Connection(config);
 
-connection.on('connect', function (err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log('Connected...');
-    }
-});
-
-function Start(callback) {
-    console.log('Starting...');
-    callback(null, 'Jake', 'United States');
-}
-
-function Read(callback) {
-    console.log('Reading rows from the Table...');
-
-    // Read all rows from table
-    const request = new Request(sql,
-        function (err, rowCount, rows) {
-            if (err) {
-                callback(err);
-            } else {
-                console.log(rowCount + ' row(s) returned');
-                callback(null);
+export function manyOrNone<T>(sql: string, params: any[] = []): Promise<T[]> {
+    return (new Promise<T[]>(async (resolve, reject) => {
+        try {
+            const request = new Request(sql, function (error: RequestError, rowCount: number, rows: ColumnValue[][]) {
+                if (!rowCount) { console.log(rowCount + ' row(s) returned'); return reject(error) };
+                const result = rows.map(row => {
+                    const data = {} as T;
+                    row.forEach(col => data[col.metadata.colName] = col.value);
+                    return data;
+                })
+                return resolve(result);
             }
-        });
+            );
+            //this.setParams(params, request)
+            connection.execSql(request);
+        } catch (error) { return reject(error); }
+    }));
+};
 
-    // Print the rows read
-    var result = "";
-    request.on('row', function (columns) {
-        columns.forEach(function (column) {
-            if (column.value === null) {
-                console.log('NULL');
-            } else {
-                result += column.metadata + column.value + " ";
-            }
-        });
-        console.log(result);
-        result = "";
-    });
-
-    // Execute SQL statement
-    connection.execSql(request);
-}
-
-// Attempt to connect and execute queries if connection goes through
-connection.on('connect', function(err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Connected');
-
-    // Execute all functions in the array serially
-    async.waterfall([
-        Read
-    ])
-  }
-});
 

@@ -7,7 +7,7 @@
     "url": "git+https://github.com/KolpakovD33/Jetti_Operation_Config.git"
   },
   "scripts": {
-    "connect": "node ./build/connect/connect.js",
+    "connect": "node ./build/Server/Get.Catalog.Operation.js",
     "watch": "tsc -w"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "node": ">=10.1.0"
   },
   "devDependencies": {
+    "@types/async": "^3.2.5",
     "@types/mssql": "^6.0.7",
     "@types/node": "^14.14.31",
     "@types/tedious": "^4.0.3",
