@@ -1,53 +1,66 @@
-import { ConnectionPool } from 'mssql';
-import { config } from './connectProps';
+import { Connection, Request, TYPES } from 'tedious';
 import { sql } from '../sql/SQLQuery';
+import { config } from './connectProps';
+import async from 'async'
 
-const pool = new ConnectionPool(config);
-const poolConnect = pool.connect();
+const connection = new Connection(config);
 
-console.log(sql);
-console.log(pool.connected);
-
-pool.on('error', err => {
-    console.log(err);
+connection.on('connect', function (err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('Connected...');
+    }
 });
 
-async function manyOrNone (sql: any, params: any[] = []) {
-    await poolConnect;
-    console.log(pool.connected);
-    try {
-        const request = pool.request();
-        console.log(request);
-        const result = await request.query(sql, params);
-        console.log(result.recordset, result.rowsAffected);
-        return result.recordset;
-    } catch (err) {
-        console.error('SQL error', err)
-    }
+function Start(callback) {
+    console.log('Starting...');
+    callback(null, 'Jake', 'United States');
 }
 
-const ttt = manyOrNone(sql)
-console.log(JSON.stringify(ttt));
+function Read(callback) {
+    console.log('Reading rows from the Table...');
 
-// async function queryExec() {
-//     let CurrentRes = await manyOrNone(sql);
-//     // console.log(CurrentRes);
-//     return CurrentRes;
-// }
+    // Read all rows from table
+    const request = new Request(sql,
+        function (err, rowCount, rows) {
+            if (err) {
+                callback(err);
+            } else {
+                console.log(rowCount + ' row(s) returned');
+                callback(null);
+            }
+        });
 
-// async function manyOrNone(sql: any, params: any[] = []) {
-//     new ConnectionPool(config).connect().then(pool => {
-//         console.log(pool);
-//         return new Promise((resolve, reject) => {
-//             pool.query(sql, params),
-//                 (err: String, result: any[]) => {
-//                     if (err) return reject(err);
-//                     resolve(result);
-//                 };
-//         })
-//     }
-//     )
-// };
+    // Print the rows read
+    var result = "";
+    request.on('row', function (columns) {
+        columns.forEach(function (column) {
+            if (column.value === null) {
+                console.log('NULL');
+            } else {
+                result += column.metadata + column.value + " ";
+            }
+        });
+        console.log(result);
+        result = "";
+    });
 
-// let ttt = queryExec();
-// //console.log(JSON.stringify(ttt));
+    // Execute SQL statement
+    connection.execSql(request);
+}
+
+// Attempt to connect and execute queries if connection goes through
+connection.on('connect', function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Connected');
+
+    // Execute all functions in the array serially
+    async.waterfall([
+        Read
+    ])
+  }
+});
+
