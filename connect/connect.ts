@@ -5,7 +5,7 @@ import { config } from './connectProps';
 
 export const connection = new Connection(config);
 
-export function manyOrNone<T>(sql: string, params: any[] = []): Promise<T[]> {
+export function manyOrNone<T>(sql: string, _params: any[] = []): Promise<T[]> {
     return (new Promise<T[]>(async (resolve, reject) => {
         try {
             const request = new Request(sql, function (error: RequestError, rowCount: number, rows: ColumnValue[][]) {
